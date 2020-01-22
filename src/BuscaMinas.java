@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class BuscaMinas extends JFrame {
 
@@ -228,6 +230,7 @@ public class BuscaMinas extends JFrame {
                 k++;
             }
         }
+
         //-------->Asignar número de bombas al rededor de la casilla
         int[] numBombasArre = buscarMinasAlRededor();
         for(int i=0; i<casillitas.length;i++){
@@ -235,20 +238,20 @@ public class BuscaMinas extends JFrame {
                 casillitas[i].setNumBombasAlRededor(numBombasArre[i]);
             }
         }
-        //----------------------------------------------------------
-        for(int i=0; i< (int) Math.sqrt(numCasillas); i++){
+        //----------------------------------------------------------Checar matriz en ventana
+        /*for(int i=0; i< (int) Math.sqrt(numCasillas); i++){
             System.out.println();
             for(int l=0; l< (int) Math.sqrt(numCasillas); l++){
                 System.out.print("."+matrix[i][l]);
             }
         }
-        //
+        //*/
 
-        for(int i=0; i<casillitas.length; i++){
+        /*for(int i=0; i<casillitas.length; i++){
             //if(casillitas[i].getIfBomb()){
                 casillitas[i].theSecretHasBeenShown();
             //}
-        }
+        }*/
 
         //----------------------------------------------------------
         //------------------- ADD GAME INTERFACE SEGMENTS---------------------
@@ -261,7 +264,25 @@ public class BuscaMinas extends JFrame {
         add(cuadricula,BorderLayout.CENTER);
         add(data, BorderLayout.NORTH);
         setVisible(true); //Si se ve o no la ventana
-        System.out.println(numCasillas);
+        for(int i=0; i<casillitas.length;i++){
+            casillitas[i].addActionListener(new ManejadorCasilla());
+        }
+        //System.out.println(numCasillas);
     }
 
+    class ManejadorCasilla implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Casilla casi = (Casilla) e.getSource();
+            casi.setClicked();
+            if (!casi.getIfBomb()){
+                casi.theSecretHasBeenShown();
+            }
+            else{
+                casi.theSecretHasBeenShown();
+                JOptionPane.showMessageDialog(null, "BOOM");
+            }
+        }
+    }
 }
