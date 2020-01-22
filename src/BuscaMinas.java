@@ -3,6 +3,7 @@ import java.awt.*;
 
 public class BuscaMinas extends JFrame {
 
+    private boolean [][] matrix;
     private JPanel cuadricula;
     private JPanel data;
     private JLabel etBombas;
@@ -92,6 +93,44 @@ public class BuscaMinas extends JFrame {
             }
             Casilla celda= new Casilla(esBomba);
             cuadricula.add(celda);
+        }
+
+        //Casilla[] casillitas= (Casilla[]) cuadricula.getComponents();
+        Casilla[] casillitas= new Casilla[numCasillas];
+        int j=0;
+        for(int i=0; i<cuadricula.getComponents().length;i++){
+            if(cuadricula.getComponents()[i] instanceof Casilla) {
+                casillitas[j] = (Casilla) cuadricula.getComponents()[i];
+                j++;
+            }
+        }
+
+        //------------------- THE MATRIX---------------------
+        matrix= new boolean[(int)Math.sqrt(numCasillas)][(int) Math.sqrt(numCasillas)];
+        int k=0;
+        for(int i=0; i< (int) Math.sqrt(numCasillas); i++){
+            for(int l=0; l< (int) Math.sqrt(numCasillas); l++){
+                if(casillitas[k].getIfBomb()) {
+                    matrix[i][l] = true;
+                }else{
+                    matrix[i][l] = false;
+                }
+                k++;
+            }
+        }
+        //----------------------------------------------------------
+        for(int i=0; i< (int) Math.sqrt(numCasillas); i++){
+            System.out.println();
+            for(int l=0; l< (int) Math.sqrt(numCasillas); l++){
+                System.out.print("."+matrix[i][l]);
+            }
+        }
+        //
+
+        for(int i=0; i<casillitas.length; i++){
+            if(casillitas[i].getIfBomb()){
+                casillitas[i].theSecretHasBeenShown();
+            }
         }
 
         //----------------------------------------------------------
