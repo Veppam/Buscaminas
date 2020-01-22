@@ -29,6 +29,116 @@ public class BuscaMinas extends JFrame {
         }
     }
 
+    public int[] buscarMinasAlRededor(){
+        int[] numBombasArre= new int[numCasillas];
+        int index=0;
+        for(int i=0; i<Math.sqrt(numCasillas);i++){
+            for(int j=0; j<Math.sqrt(numCasillas);j++){
+                int num=0;
+                if(i==0 && j==0){
+                    if(matrix[i+1][j])
+                        num++;
+                    if(matrix[i+1][j+1])
+                        num++;
+                    if(matrix[i][j+1])
+                        num++;
+                }else if(i==0 && j>0 && j!=(Math.sqrt(numCasillas)-1)){
+                    if(matrix[i][j+1])
+                        num++;
+                    if(matrix[i+1][j+1])
+                        num++;
+                    if(matrix[i+1][j])
+                        num++;
+                    if(matrix[i+1][j-1])
+                        num++;
+                    if(matrix[i][j-1])
+                        num++;
+
+                }else if(i==0 && j==(Math.sqrt(numCasillas)-1)){
+                    if(matrix[i][j-1])
+                        num++;
+                    if(matrix[i+1][j-1])
+                        num++;
+                    if(matrix[i+1][j])
+                        num++;
+
+                }else if(j==(Math.sqrt(numCasillas)-1) && i>0 && i!=(Math.sqrt(numCasillas)-1)){
+                    if(matrix[i-1][j])
+                        num++;
+                    if(matrix[i-1][j-1])
+                        num++;
+                    if(matrix[i][j-1])
+                        num++;
+                    if(matrix[i+1][j-1])
+                        num++;
+                    if(matrix[i+1][j])
+                        num++;
+
+                }else if(j==(Math.sqrt(numCasillas)-1) && i==(Math.sqrt(numCasillas)-1)){
+                    if(matrix[i-1][j])
+                        num++;
+                    if(matrix[i-1][j-1])
+                        num++;
+                    if(matrix[i][j-1])
+                        num++;
+
+                }else if(i==(Math.sqrt(numCasillas)-1) && j>0 && j!=(Math.sqrt(numCasillas)-1)){
+                    if(matrix[i][j+1])
+                        num++;
+                    if(matrix[i-1][j+1])
+                        num++;
+                    if(matrix[i-1][j])
+                        num++;
+                    if(matrix[i-1][j-1])
+                        num++;
+                    if(matrix[i][j-1])
+                        num++;
+
+                }else if(i==(Math.sqrt(numCasillas)-1) && j==0){
+                    if(matrix[i][j+1])
+                        num++;
+                    if(matrix[i-1][j+1])
+                        num++;
+                    if(matrix[i-1][j])
+                        num++;
+
+                }else if(j==0 && i>0 && i!=(Math.sqrt(numCasillas)-1)){
+                    if(matrix[i-1][j])
+                        num++;
+                    if(matrix[i-1][j+1])
+                        num++;
+                    if(matrix[i][j+1])
+                        num++;
+                    if(matrix[i+1][j+1])
+                        num++;
+                    if(matrix[i+1][j])
+                        num++;
+
+                }else if(i>0 && j>0 && i<(Math.sqrt(numCasillas)-1) && j<(Math.sqrt(numCasillas)-1)){
+                    if(matrix[i-1][j])
+                        num++;
+                    if(matrix[i-1][j+1])
+                        num++;
+                    if(matrix[i][j+1])
+                        num++;
+                    if(matrix[i+1][j+1])
+                        num++;
+                    if(matrix[i+1][j])
+                        num++;
+                    if(matrix[i+1][j-1])
+                        num++;
+                    if(matrix[i][j-1])
+                        num++;
+                    if(matrix[i-1][j-1])
+                        num++;
+                }
+                numBombasArre[index]=num;
+                index++;
+            }
+        }
+        return numBombasArre;
+    }
+
     public static void main(String[] KbIn){
         BuscaMinas Juego = new BuscaMinas();
     }
@@ -118,6 +228,13 @@ public class BuscaMinas extends JFrame {
                 k++;
             }
         }
+        //-------->Asignar número de bombas al rededor de la casilla
+        int[] numBombasArre = buscarMinasAlRededor();
+        for(int i=0; i<casillitas.length;i++){
+            if(!casillitas[i].getIfBomb()) {
+                casillitas[i].setNumBombasAlRededor(numBombasArre[i]);
+            }
+        }
         //----------------------------------------------------------
         for(int i=0; i< (int) Math.sqrt(numCasillas); i++){
             System.out.println();
@@ -128,9 +245,9 @@ public class BuscaMinas extends JFrame {
         //
 
         for(int i=0; i<casillitas.length; i++){
-            if(casillitas[i].getIfBomb()){
+            //if(casillitas[i].getIfBomb()){
                 casillitas[i].theSecretHasBeenShown();
-            }
+            //}
         }
 
         //----------------------------------------------------------
