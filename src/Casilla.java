@@ -43,4 +43,8 @@ public class Casilla extends JButton {
     public void setClicked(){
         clicked = true;
     }
+
+    public boolean getClicked(){
+        return clicked;
+    }
 }
