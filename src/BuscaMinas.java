@@ -204,7 +204,7 @@ public class BuscaMinas extends JFrame {
                     this.numCasillas = 16 * 16;
                     this.numBombas = 40;
                     break;
-                case "Dificil":
+                case "Difícil":
                     this.numCasillas = 20 * 20;
                     this.numBombas = 80;
                     break;
@@ -279,6 +279,7 @@ public class BuscaMinas extends JFrame {
             //------------------- ADD GAME INTERFACE SEGMENTS---------------------
 
             theGame.setIcon(new ImageIcon("images/HappyFace.PNG"));
+            theGame.addActionListener(new ManejadorCarita());
             etBombas = new JLabel("Minas: " + numBombas);
             data.add(etBombas, BorderLayout.EAST);
             data.add(theGame, BorderLayout.CENTER);
@@ -325,6 +326,13 @@ public class BuscaMinas extends JFrame {
                 dispose();
             }
 
+        }
+    }
+    class ManejadorCarita implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            BuscaMinas newJuego = new BuscaMinas();
+            dispose();
         }
     }
 }
