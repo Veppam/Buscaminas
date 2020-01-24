@@ -15,7 +15,6 @@ public class Casilla extends JButton {
         setIcon(new ImageIcon("images/secret.png"));
         this.esUnaBomba = esBomba;
         this.param = param;
-
         switch (param){
             case "Fácil":
                 for (int i = 0; i < 9; i++){
