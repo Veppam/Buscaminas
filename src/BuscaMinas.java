@@ -236,19 +236,12 @@ public class BuscaMinas extends JFrame {
             }
         }
         //----------------------------------------------------------
-        for(int i=0; i< (int) Math.sqrt(numCasillas); i++){
-            System.out.println();
-            for(int l=0; l< (int) Math.sqrt(numCasillas); l++){
-                System.out.print("."+matrix[i][l]);
-            }
-        }
-        //
 
-        for(int i=0; i<casillitas.length; i++){
+        /*for(int i=0; i<casillitas.length; i++){
             //if(casillitas[i].getIfBomb()){
                 casillitas[i].theSecretHasBeenShown();
             //}
-        }
+        }*/
 
         //----------------------------------------------------------
         //------------------- ADD GAME INTERFACE SEGMENTS---------------------

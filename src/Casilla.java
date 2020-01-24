@@ -19,7 +19,7 @@ public class Casilla extends JButton {
         digitCasillas[7]= new ImageIcon("images/7.png");
         digitCasillas[8]= new ImageIcon("images/8.png");
         this.esUnaBomba= esBomba;
-        this.digitCasillas[0]= new ImageIcon();
+
     }
 
     public void theSecretHasBeenShown(){
