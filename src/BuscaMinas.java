@@ -151,7 +151,6 @@ public class BuscaMinas extends JFrame {
 
         for(int i=0; i < numCasillas; i++){
             if (casis[i].getClicked()){
-                System.out.println (casis[i].getClicked());
                 numCliks ++;
             }
         }
@@ -160,7 +159,6 @@ public class BuscaMinas extends JFrame {
         }else{
             siNo = false;
         }
-        System.out.println (numCombi + " " + siNo + " " + numCliks);
         return siNo;
     }
 
@@ -229,7 +227,7 @@ public class BuscaMinas extends JFrame {
                         esBomba = true;
                     }
                 }
-                Casilla celda = new Casilla(esBomba);
+                Casilla celda = new Casilla(esBomba, dificultadOp);
                 cuadricula.add(celda);
             }
 
@@ -297,7 +295,6 @@ public class BuscaMinas extends JFrame {
         public void actionPerformed(ActionEvent e) {
             Casilla casi = (Casilla) e.getSource();
             siNop = checaGana(casillitas);
-            System.out.println(siNop);
             casi.setClicked();
             if (!siNop){
                 if (!casi.getIfBomb()) {

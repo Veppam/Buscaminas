@@ -5,28 +5,50 @@ public class Casilla extends JButton {
     private boolean clicked;
     private boolean esUnaBomba;
     private int numBombasAlRededor;
+    private String param;
+
     public static ImageIcon[] digitCasillas= new ImageIcon[9];
 
 
-    public Casilla(boolean esBomba){
+    public Casilla(boolean esBomba, String param) {
         clicked = false;
-        digitCasillas[0]= new ImageIcon("images/0.png");
-        digitCasillas[1]= new ImageIcon("images/1.png");
-        digitCasillas[2]= new ImageIcon("images/2.png");
-        digitCasillas[3]= new ImageIcon("images/3.png");
-        digitCasillas[4]= new ImageIcon("images/4.png");
-        digitCasillas[5]= new ImageIcon("images/5.png");
-        digitCasillas[6]= new ImageIcon("images/6.png");
-        digitCasillas[7]= new ImageIcon("images/7.png");
-        digitCasillas[8]= new ImageIcon("images/8.png");
-        this.esUnaBomba= esBomba;
         setIcon(new ImageIcon("images/secret.png"));
+        this.esUnaBomba = esBomba;
+        this.param = param;
 
+        switch (param){
+            case "Fácil":
+                for (int i = 0; i < 9; i++){
+                    digitCasillas[i] = new ImageIcon("images/Facil/"+i+".png");
+                }
+                break;
+            case "Medio":
+                for (int i = 0; i < 9; i++){
+                    digitCasillas[i] = new ImageIcon("images/Medio/"+i+".png");
+                }
+                break;
+            case "Difícil":
+                for (int i = 0; i < 9; i++){
+                    digitCasillas[i] = new ImageIcon("images/Dificil/"+i+".png");
+                }
+                break;
+        }
+        this.digitCasillas[0] = new ImageIcon();
     }
 
     public void theSecretHasBeenShown(){
         if(esUnaBomba){
-            setIcon(new ImageIcon("images/bomb.png"));
+            switch (param){
+                case "Fácil":
+                    setIcon(new ImageIcon("images/Facil/bomb.png"));
+                    break;
+                case "Medio":
+                    setIcon(new ImageIcon("images/Medio/bomb.png"));
+                    break;
+                case "Difícil":
+                    setIcon(new ImageIcon("images/Dificil/bomb.png"));
+                    break;
+            }
         }else{
             setIcon(digitCasillas[numBombasAlRededor]);
         }
