@@ -300,7 +300,9 @@ public class BuscaMinas extends JFrame {
                 if (!casi.getIfBomb()) {
                     casi.theSecretHasBeenShown();
                 } else {
-                    casi.theSecretHasBeenShown();
+                    for(int i=0; i<casillitas.length;i++) {
+                        casillitas[i].theSecretHasBeenShown();
+                    }
                     int resp = JOptionPane.showConfirmDialog(null, "¿Volver a jugar?",
                             "BOOM", JOptionPane.YES_NO_OPTION);
                     if (resp == JOptionPane.YES_OPTION) {
