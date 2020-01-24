@@ -2,13 +2,14 @@ import javax.swing.*;
 
 public class Casilla extends JButton {
 
+    private boolean clicked;
     private boolean esUnaBomba;
     private int numBombasAlRededor;
     public static ImageIcon[] digitCasillas= new ImageIcon[9];
 
 
     public Casilla(boolean esBomba){
-        setIcon(new ImageIcon("images/secret.png"));
+        clicked = false;
         digitCasillas[0]= new ImageIcon("images/0.png");
         digitCasillas[1]= new ImageIcon("images/1.png");
         digitCasillas[2]= new ImageIcon("images/2.png");
@@ -19,6 +20,7 @@ public class Casilla extends JButton {
         digitCasillas[7]= new ImageIcon("images/7.png");
         digitCasillas[8]= new ImageIcon("images/8.png");
         this.esUnaBomba= esBomba;
+        setIcon(new ImageIcon("images/secret.png"));
 
     }
 
@@ -38,4 +40,11 @@ public class Casilla extends JButton {
         this.numBombasAlRededor=nBombas;
     }
 
+    public void setClicked(){
+        clicked = true;
+    }
+
+    public boolean getClicked(){
+        return clicked;
+    }
 }

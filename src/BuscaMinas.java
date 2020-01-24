@@ -1,15 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class BuscaMinas extends JFrame {
 
     private boolean [][] matrix;
+    private Casilla[] casillitas;
     private JPanel cuadricula;
     private JPanel data;
     private JLabel etBombas;
     private JButton theGame;
     private int numCasillas;
     private int numBombas;
+    private int dificultad;
+    private boolean siNop;
 
 
     public int colocarMinasRand(int [] bombsRand){
@@ -139,6 +144,26 @@ public class BuscaMinas extends JFrame {
         return numBombasArre;
     }
 
+    public boolean checaGana(Casilla[] casis){
+        boolean siNo = false;
+        int numCliks = 1;
+        int numCombi = numCasillas - numBombas;
+
+        for(int i=0; i < numCasillas; i++){
+            if (casis[i].getClicked()){
+                System.out.println (casis[i].getClicked());
+                numCliks ++;
+            }
+        }
+        if (numCombi == numCliks){
+            siNo = true;
+        }else{
+            siNo = false;
+        }
+        System.out.println (numCombi + " " + siNo + " " + numCliks);
+        return siNo;
+    }
+
     public static void main(String[] KbIn){
         BuscaMinas Juego = new BuscaMinas();
     }
@@ -170,72 +195,75 @@ public class BuscaMinas extends JFrame {
                 dificultades,
                 dificultades[1]
         );
+        if (dificultadOp != null){
+            switch (dificultadOp) {
+                case "Fácil":
+                    this.numCasillas = 10 * 10;
+                    this.numBombas = 10;
+                    this.dificultad=1;
+                    break;
+                case "Medio":
+                    this.numCasillas = 16 * 16;
+                    this.numBombas = 40;
+                    this.dificultad=2;
+                    break;
+                case "Difícil":
+                    this.numCasillas = 20 * 20;
+                    this.numBombas = 80;
+                    this.dificultad=3;
+                    break;
+            }
+            //----------------------------------------------------------
+            //------------------Generar Casillas------------------------
 
-        switch (dificultadOp) {
-            case "Fácil":
-                this.numCasillas = 10 * 10;
-                this.numBombas = 10;
-                break;
-            case "Medio":
-                this.numCasillas = 16 * 16;
-                this.numBombas = 40;
-                break;
-            case "Difícil":
-                this.numCasillas = 20 * 20;
-                this.numBombas = 80;
-                break;
-        }
-        //----------------------------------------------------------
-        //------------------Generar Casillas------------------------
+            //-------------->Obtener números de casillas de bombas
+            int[] bombsRand = new int[numBombas]; //Guarda números de casillas aleatorios de bombas
+            for (int i = 0; i < bombsRand.length; i++) {
+                bombsRand[i] = colocarMinasRand(bombsRand);
+            }
+            //------------->Obtener casillas
+            for (int i = 0; i < numCasillas; i++) {
+                boolean esBomba = false;
+                for (int j = 0; j < bombsRand.length; j++) {
+                    if (i == bombsRand[j]) {
+                        esBomba = true;
+                    }
+                }
+                Casilla celda = new Casilla(esBomba);
+                cuadricula.add(celda);
+            }
 
-        //-------------->Obtener números de casillas de bombas
-        int[] bombsRand= new int[numBombas]; //Guarda números de casillas aleatorios de bombas
-        for(int i=0; i<bombsRand.length; i++){
-            bombsRand[i]= colocarMinasRand(bombsRand);
-        }
-        //------------->Obtener casillas
-        for(int i=0; i<numCasillas;i++){
-            boolean esBomba=false;
-            for(int j=0; j<bombsRand.length; j++){
-                if(i==bombsRand[j]){
-                    esBomba=true;
+            //Casilla[] casillitas= (Casilla[]) cuadricula.getComponents();
+            casillitas = new Casilla[numCasillas];
+            int j = 0;
+            for (int i = 0; i < cuadricula.getComponents().length; i++) {
+                if (cuadricula.getComponents()[i] instanceof Casilla) {
+                    casillitas[j] = (Casilla) cuadricula.getComponents()[i];
+                    j++;
                 }
             }
-            Casilla celda= new Casilla(esBomba);
-            cuadricula.add(celda);
-        }
 
-        //Casilla[] casillitas= (Casilla[]) cuadricula.getComponents();
-        Casilla[] casillitas= new Casilla[numCasillas];
-        int j=0;
-        for(int i=0; i<cuadricula.getComponents().length;i++){
-            if(cuadricula.getComponents()[i] instanceof Casilla) {
-                casillitas[j] = (Casilla) cuadricula.getComponents()[i];
-                j++;
-            }
-        }
-
-        //------------------- THE MATRIX---------------------
-        matrix= new boolean[(int)Math.sqrt(numCasillas)][(int) Math.sqrt(numCasillas)];
-        int k=0;
-        for(int i=0; i< (int) Math.sqrt(numCasillas); i++){
-            for(int l=0; l< (int) Math.sqrt(numCasillas); l++){
-                if(casillitas[k].getIfBomb()) {
-                    matrix[i][l] = true;
-                }else{
-                    matrix[i][l] = false;
+            //------------------- THE MATRIX---------------------
+            matrix = new boolean[(int) Math.sqrt(numCasillas)][(int) Math.sqrt(numCasillas)];
+            int k = 0;
+            for (int i = 0; i < (int) Math.sqrt(numCasillas); i++) {
+                for (int l = 0; l < (int) Math.sqrt(numCasillas); l++) {
+                    if (casillitas[k].getIfBomb()) {
+                        matrix[i][l] = true;
+                    } else {
+                        matrix[i][l] = false;
+                    }
+                    k++;
                 }
-                k++;
             }
-        }
-        //-------->Asignar número de bombas al rededor de la casilla
-        int[] numBombasArre = buscarMinasAlRededor();
-        for(int i=0; i<casillitas.length;i++){
-            if(!casillitas[i].getIfBomb()) {
-                casillitas[i].setNumBombasAlRededor(numBombasArre[i]);
+
+            //-------->Asignar número de bombas al rededor de la casilla
+            int[] numBombasArre = buscarMinasAlRededor();
+            for (int i = 0; i < casillitas.length; i++) {
+                if (!casillitas[i].getIfBomb()) {
+                    casillitas[i].setNumBombasAlRededor(numBombasArre[i]);
+                }
             }
-        }
-        //----------------------------------------------------------
 
         /*for(int i=0; i<casillitas.length; i++){
             //if(casillitas[i].getIfBomb()){
@@ -243,18 +271,64 @@ public class BuscaMinas extends JFrame {
             //}
         }*/
 
-        //----------------------------------------------------------
-        //------------------- ADD GAME INTERFACE SEGMENTS---------------------
+            //----------------------------------------------------------
+            //------------------- ADD GAME INTERFACE SEGMENTS---------------------
 
-        theGame.setIcon(new ImageIcon("images/HappyFace.PNG"));
-        etBombas= new JLabel("Minas: "+numBombas);
-        data.add(etBombas, BorderLayout.EAST);
-        data.add(theGame, BorderLayout.CENTER);
-        cuadricula.setLayout(new GridLayout((int)Math.sqrt(numCasillas), (int)Math.sqrt(numCasillas))); //Hacer que se acomoden en cuadrado
-        add(cuadricula,BorderLayout.CENTER);
-        add(data, BorderLayout.NORTH);
-        setVisible(true); //Si se ve o no la ventana
-        System.out.println(numCasillas);
+            theGame.setIcon(new ImageIcon("images/HappyFace.PNG"));
+            theGame.addActionListener(new ManejadorCarita());
+            etBombas = new JLabel("Minas: " + numBombas);
+            data.add(etBombas, BorderLayout.EAST);
+            data.add(theGame, BorderLayout.CENTER);
+            cuadricula.setLayout(new GridLayout((int) Math.sqrt(numCasillas), (int) Math.sqrt(numCasillas))); //Hacer que se acomoden en cuadrado
+            add(cuadricula, BorderLayout.CENTER);
+            add(data, BorderLayout.NORTH);
+            setVisible(true); //Si se ve o no la ventana
+            for (int i = 0; i < casillitas.length; i++) {
+                casillitas[i].addActionListener(new ManejadorCasilla());
+            }
+        }else{
+            dispose();
+        }
+        //System.out.println(numCasillas);
     }
 
+    class ManejadorCasilla implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Casilla casi = (Casilla) e.getSource();
+            siNop = checaGana(casillitas);
+            System.out.println(siNop);
+            casi.setClicked();
+            if (!siNop){
+                if (!casi.getIfBomb()) {
+                    casi.theSecretHasBeenShown();
+                } else {
+                    casi.theSecretHasBeenShown();
+                    int resp = JOptionPane.showConfirmDialog(null, "¿Volver a jugar?",
+                            "BOOM", JOptionPane.YES_NO_OPTION);
+                    if (resp == JOptionPane.YES_OPTION) {
+                        BuscaMinas newJuego = new BuscaMinas();
+                    }
+                    dispose();
+                }
+            }
+            else{
+                casi.theSecretHasBeenShown();
+                int resp = JOptionPane.showConfirmDialog(null, "¿Volver a jugar?",
+                        "GANASTE", JOptionPane.YES_NO_OPTION);
+                if (resp == JOptionPane.YES_OPTION) {
+                    BuscaMinas newJuego = new BuscaMinas();
+                }
+                dispose();
+            }
+
+        }
+    }
+    class ManejadorCarita implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            BuscaMinas newJuego = new BuscaMinas();
+            dispose();
+        }
+    }
 }
