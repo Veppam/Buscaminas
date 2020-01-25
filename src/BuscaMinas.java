@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -168,7 +169,7 @@ public class BuscaMinas extends JFrame {
 
     public BuscaMinas(){
         //------------------- BASIC GAME INTERFACE SETTINGS---------------------
-        super("Busca Minas");
+        super("Busca Minas (por Emi y Manuel)");
         setSize(600,600); //tamaño de la ventana
         setLocation(100,100); //Lugar donde va a estar
         setDefaultCloseOperation(EXIT_ON_CLOSE); //Qué hacer al cerrar
@@ -275,8 +276,11 @@ public class BuscaMinas extends JFrame {
             theGame.setIcon(new ImageIcon("images/HappyFace.PNG"));
             theGame.addActionListener(new ManejadorCarita());
             etBombas = new JLabel("Minas: " + numBombas);
-            data.add(etBombas, BorderLayout.EAST);
-            data.add(theGame, BorderLayout.CENTER);
+            data.setLayout(new GridLayout(1,3));
+            data.add(etBombas);
+            etBombas.setBorder(new EmptyBorder(0,20,0,0));
+            data.add(theGame);
+            data.add(new JLabel());
             cuadricula.setLayout(new GridLayout((int) Math.sqrt(numCasillas), (int) Math.sqrt(numCasillas))); //Hacer que se acomoden en cuadrado
             add(cuadricula, BorderLayout.CENTER);
             add(data, BorderLayout.NORTH);

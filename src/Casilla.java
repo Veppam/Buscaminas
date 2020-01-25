@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class Casilla extends JButton {
 
@@ -12,7 +13,7 @@ public class Casilla extends JButton {
 
     public Casilla(boolean esBomba, String param) {
         clicked = false;
-        setIcon(new ImageIcon("images/secret.png"));
+        //setIcon(new ImageIcon("images/secret.png"));
         this.esUnaBomba = esBomba;
         this.param = param;
         switch (param){
@@ -51,6 +52,8 @@ public class Casilla extends JButton {
         }else{
             setIcon(digitCasillas[numBombasAlRededor]);
         }
+        if(numBombasAlRededor==0)
+            setBackground(new Color(126, 125, 123));
     }
 
     public boolean getIfBomb(){
@@ -62,6 +65,8 @@ public class Casilla extends JButton {
     }
 
     public void setClicked(){
+        if(numBombasAlRededor==0)
+            setBackground(new Color(126, 125, 123));
         clicked = true;
     }
 
